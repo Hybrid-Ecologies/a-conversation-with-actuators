@@ -1,0 +1,410 @@
+
+#behavior-library .track-full{
+  background: darken(desaturate($sexy_green, 40%), 45%);
+}
+.track-dom{
+  width: 100%;
+  height: 90px;
+  position: relative;
+}
+#event-design{
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+#behavior-library{
+  behaviornode{
+    margin-top: 5px;
+  }
+}
+#behavior_environment{
+  // width: calc(100% - 130px);
+  // max-width: calc(100% - 130px);
+  /*width: 100%;*/
+  // height: 100%;
+}
+$lines: 9pt;
+.btn-behavior{
+  background: darken($sexy_green, 30%);
+}
+behaviornode{
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+  @include drop-shadow(0.8);
+  z-index: 100000000;
+  position: relative;
+  cursor: pointer;
+  width: 100px;
+  height: 80px;
+  background: darken($sexy_green, 30%);
+  overflow: hidden;
+  padding: 10px 5px;
+  font-size: $lines;
+  line-height: $lines;
+  border-radius: 5px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: space-between;
+  .close{
+      // color: $error;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: white;
+      font-size: 7pt;
+    }
+  p{
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+  .bottom .vert{
+    width: 70%;
+  }
+  .play-container{
+    width: 30%;
+    margin-right: 5px;
+    button{
+      border: 1px solid rgba(255, 255, 255, 0.5) !important;
+      padding: 1px 1px !important;
+    }
+    
+  }
+  span.name{
+    font-weight: bold;
+    word-wrap: break-word;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .info, .repeat{
+    font-size: 0.7 * $lines;
+    line-height: 0.9 * $lines;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+  }
+  .time{
+    margin: 5px 0 2px 0 ;
+  }
+  .info{
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .repeat{
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  &:hover{
+    background: darken($sexy_green, 35%);
+  }
+  &:active{
+    background: darken($sexy_green, 40%);
+  }
+  &.selected{
+    @extend block.selected;
+    background: darken($sexy_green, 20%);
+  
+  }
+}
+
+behavior{
+  @extend .hoz;
+  width: 100%;
+	height: 100%;
+  border-radius: 3px;
+	padding: 0px 0px 0px 0px;
+	background: darken($composition_base, 6%);
+	margin: 5px;
+	border: 1px solid darken($composition_base, 55%);
+	@include drop-shadow(0.93);
+	&.selected{@extend block.selected;}
+  #choreography-binders{
+    padding: 0px 4px;
+    min-width: 94px;
+
+    choreography{
+      margin-bottom: 7px;
+      button{
+        width: 100%;
+      }
+      button{
+       
+      }
+      &.selected button{
+         background: darken(#337ab7, 20%);
+         /*border: 2px solid #00A8E1;*/
+         @include inset-shadow(0.8)
+      }
+      button:focus{
+        outline: none;
+      }
+      height: 83.52px;
+    }
+  }
+
+  #stage{
+    background: darken($composition_base, 10%);
+    width: $actuator_width;
+    /*padding: 4px 0px 4px 0px;*/
+    height: 100%;
+  }
+  
+  #timetrack{
+    position: relative;
+    background: darken($composition_base, 15%);
+    width: 100%;
+    height: 100%;
+    #scrubber{
+      cursor: pointer;
+      position: absolute;
+      left: 0%;
+      /*top: -8px;*/
+      z-index: 1001;
+      width: 1.2px;
+      height: 100%; 
+      float: left;
+      #timeline{
+        width: 100%;
+        height: 100%;
+        background: $sexy_off_white;
+        z-index: 0;
+        @include drop-shadow(0.9);
+      }
+      #handle{
+        width: 0; 
+        height: 0; 
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid $electric_blue;
+        font-size: 0;
+        line-height: 0;
+        position: absolute;
+        top: -8px;
+        width: 2px;
+        z-index: 0;
+        @include drop-shadow(0.9);
+      }
+    }
+    
+    acceptor.datasignals{
+      @extend acceptor.datasignal;
+      position: relative;
+      width: 100%;
+      margin: 0px 0px 0px 0px;
+      // background: darken($signal_base, 15%);
+      background: darken($signal_base, 20%);
+     
+      border-bottom: solid 3px darken($signal_base, 15%);
+      border-radius: 0!important;
+      &::after{
+        color: lighten($signal_base, 10%);
+        content: 'SIGNALS';
+        z-index: 0;
+      }
+    } 
+  }
+  
+
+}
+
+// label{
+//   height: 18px;
+//   margin-bottom: 0;
+//   line-height: 100%;
+//   width: 100%;
+//   padding: 3px 3px;
+//   font-size: 9pt;
+//   font-weight: bold;
+//   font-family: Avenir, sans-serif;
+//   color: $sexy_off_white;
+//   background: desaturate(darken($composition_base, 45%), 10%);
+// }
+
+handle{
+  width: 10px;
+  background: desaturate(lighten($composition_base, 20%), 40%);
+  height: 102%;
+  border: 1px solid $off_black;
+  border-radius: 2px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  /*margin-right: 5px;*/
+  margin-left: -1px;
+  cursor: -webkit-grabbing; cursor: -moz-grabbing;
+}
+handle:active{
+  background: desaturate(lighten($composition_base, 0%), 40%);
+}
+
+.track-button{
+  height: 102%;
+  width: 15px;
+  margin-right: -1px;
+  margin-left: 0px;
+  color: $sexy_off_white;
+  background: darken($composition_base, 35%);
+  border-color: darken($composition_base, 55%);
+  &:focus{
+  	outline: none;
+  	color: $sexy_off_white;
+   	background: darken($composition_base, 35%);
+  	border-color: darken($composition_base, 55%);
+  }
+  &:hover{
+  	outline: none;
+  	color: $sexy_off_white;
+    background: darken($composition_base, 40%);
+ 	border-color: darken($composition_base, 55%);
+  }
+  &:active{
+  	outline: none;
+  	color: $sexy_off_white;
+    background: darken($composition_base, 45%);
+  	border-color: darken($composition_base, 55%);
+  }
+  &:active:focus{
+  	color: $sexy_off_white;
+  	outline: none;
+  }
+}
+
+.btn-xxs, .btn-group-xxs > .btn {
+    padding: 1px 4px;
+    font-size: 8px;
+    line-height: 1.5;
+    border-radius: 3px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 0px;
+}
+
+
+event.composition-design{
+    border: 1px solid darken($composition_base, 20%);
+    background: darken($composition_base, 5%);
+    
+    // margin-top: 100px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+    #repeat.active{
+      color: $sexy_green;
+    }
+    .toolbar{
+      padding: 2px 12px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      background: darken($composition_base, 15%);
+      height: 30px;
+      overflow: hidden;
+
+      input{
+        border-radius: 5px;
+        border: 1px solid darken($composition_base, 10%);
+        color: darken(white, 10%);
+        padding: 3px 10px;
+        font-weight: normal;
+        font-size: 10pt;
+        height: 80%;
+        margin: 5px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+    .content{
+      height: calc(100% - 30px);
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+    }
+      .sidebar{
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 130px;
+        height: 100%;
+        background: desaturate(darken($sexy_green, 30%), 40%);
+        height: 100%;
+        acceptor.behavior{
+          @extend acceptor.actuator;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          background: darken($c9, 10%);
+          border-radius: 5px;
+          &::after{
+              content: 'BEHAVIOR';
+              color: lighten($sexy_green, 50%);
+          }
+        }
+      }
+      .workarea{
+        position: relative;
+        width: calc(100% - 0px);
+        height: 100%;
+        #timeruler{
+          justify-content: space-between;
+          width: 100%;
+          height: 25px;
+          background: darken($composition_base, 35%);
+          padding: 4px 2px;
+        }
+      }
+
+
+	  &.playground{
+      height: 500px;
+      overflow-y:scroll 
+    }
+    .track{
+      @extend track;
+      height: 100%;
+      background: darken($composition_base, 20%);
+    }
+    .track-unit{
+      @extend .track;
+      width: $actuator_width !important;
+      min-width: $actuator_width !important;
+    }
+    .track-long{
+      @extend .track;
+      width: $actuator_width * 3 !important;
+    }
+    .track-full{
+      @extend .track;
+      width: 100%;
+    }
+  
+    .trigger{
+      @extend .trigger;
+      background: lighten($composition_base, 5%);
+
+      &:hover{
+        @extend .trigger:hover;
+        background: darken($composition_base, 10%);
+      }
+      &:active{
+        @extend .trigger:active;
+        background: darken($composition_base, 15%);
+      }
+      &:focus{
+        @extend .trigger:focus;
+        background: darken($composition_base, 15%);
+      }
+    }
+  }

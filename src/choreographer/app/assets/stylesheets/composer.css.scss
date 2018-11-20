@@ -1,0 +1,80 @@
+#actuators button.remove{display: none;}
+
+.template{ display: none !important;}
+commandlist{
+	@extend keyframe;
+	border-radius: 5px;
+	padding: 5px 8px !important;
+	width: 500px !important;
+}
+.command{
+	display: block;
+	margin: 0;
+	text-align: center;
+	width: 100%;
+	font-size: 8pt;
+	height: 8px;
+	line-height: 8px;
+	font-weight: normal;
+	font-family: Menlo, Consolas, monospace;
+}
+
+.faint{
+	opacity: 0.8;
+}
+
+
+
+
+
+input.sexy{
+	width: 80%;
+	/*margin-top: 10px !important;*/
+	height: 22px;
+	font-size: 10pt;
+	color: #111;
+	font-family: Avenir;
+	font-weight: normal;
+	margin: 3px 0px;
+	border-radius: 3px;
+	outline: none;
+	border: none;
+	padding: 2px 0px;
+}
+
+.sexy-input-group{
+	width: 90%;
+	margin: 5px 2px;
+}
+button.sexy{
+	/*width: 30%;*/
+	margin-top: 10px !important;
+	margin-bottom: 5px !important;
+}
+
+
+
+/*COMPOSER CSS*/
+
+
+
+#composed{
+	background: darken($base, 30%);
+}
+#interaction{
+	background: darken($base, 32%);
+}
+
+
+#stateviewer{
+	@extend commandlist;
+	width: 400px !important;
+}
+
+#benchmarks{
+	@extend commandlist;
+	width: 350px !important;
+}
+
+
+

@@ -1,0 +1,96 @@
+// Place all the styles related to the tool controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+//= require annotator/jsoneditor.css
+
+
+@import "variables";
+@import "arduino";
+@import "flexors";
+
+
+/*ACTUATION AESTHETICS*/
+@import "track";
+@import "composer";
+@import "block";
+@import "datasignal";
+@import "actuator";
+@import "behavior";
+@import "widget";
+@import "drop";
+@import "fileselectors";
+@import "pipeline";
+
+$ratio: 60%;
+event.fullscreen{
+	width: 100%;
+	height: 100% !important;
+	z-index: 100;
+	position: absolute;
+	top: 47px;
+	left: 0;
+}
+#ui2{
+	background: darken($base, 50%);
+}
+#control-column{
+	width: 1 - $ratio;
+	float: left;
+}
+#project{
+  margin-top: 40px;
+  padding-top: 10px;
+  width: 100%;
+  @include drop-shadow(0.83);
+}
+#group{
+  margin-top: 440px;
+}
+group#levels{
+	padding-top: 42px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding-bottom: 42px;
+	width: $ratio;
+	float: right;
+	/*height: 100%;*/
+	flex-wrap: nowrap !important;
+	flex-direction: column;
+	justify-content: flex-start;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	@include inset-shadow(0.8);
+}
+
+
+#control-container{
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: 100%;
+	overflow: none;
+	cursor: pointer;
+}
+#view-container{
+	height: $view_ui_ratio * 100%;
+}
+#status{
+	/*position: relative;*/
+	background: $base;
+	border-left: $thick solid $off_black;
+	padding: 0px 0px 0px 0px;
+	z-index: 0;
+	@include drop-shadow(0.2);
+	/*overflow: hidden;*/
+}
+#ui-container{
+	border-top: $thick solid $off_black;
+	background: darken($base, 10%);
+	height: (1 - $view_ui_ratio) * 100%;
+}
+/* UI CSS */
+
+
+	
+	

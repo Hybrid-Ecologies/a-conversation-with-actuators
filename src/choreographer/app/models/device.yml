@@ -1,0 +1,358 @@
+psycho: 
+  loudness: 0.67
+  vibration95Hz: 0.95
+  vibration60Hz: 0.6
+  brightnessPS: 0.5
+  brightness5deg: 0.33
+  brightnessPSFlash: 1
+  warmthMetal: 1.6
+  warmthIrradiantSmall: 1.3
+  warmthIrradiantLarge: 0.7
+
+actuators:
+  LED:
+    name: LED
+    color: "#FFFFFF"
+    package: DIP
+    dimension: brightness
+    channels: 
+      brightness:
+        range:
+          min: 0
+          max: 255
+        derived: false
+        resolution: 1
+        modality: brightnessPS
+        throttle: 33
+        budget: null
+  RGBLED:
+    name: RGBLED
+    package: DIP
+    channels:
+      red:
+        range:
+          min: 0
+          max: 255
+        derived: false
+        resolution: 1
+        modality: brightnessPS
+        throttle: 33
+        budget: null
+      green: 
+        range:
+          min: 0
+          max: 255
+        derived: false
+        resolution: 1
+        modality: brightnessPS
+        throttle: 33
+        budget: null
+      blue: 
+        range:
+          min: 0
+          max: 255
+        derived: false
+        resolution: 1
+        modality: brightnessPS
+        throttle: 33
+        budget: null
+  HSBLED:
+    name: HSBLED
+    package: SMD
+    channels:
+      hue: 
+        range:
+          min: 0
+          max: 360
+        derived: false
+        resolution: 1.4
+        modality: null
+        throttle: 33
+        budget: null
+      saturation: 
+        range:
+          min: 0
+          max: 1
+        derived: false
+        resolution: 0.00392156862
+        modality: null
+        throttle: 33
+        budget: null
+      brightness: 
+        range:
+          min: 0
+          max: 1
+        derived: false
+        resolution: 0.00392156862
+        modality: brightnessPS
+        throttle: 33
+        budget: null
+  SERVO:
+    name: SERVO
+    dimension: angle
+    channels: 
+      speed: 
+        range:
+          min: 0
+          max: 180
+        derived: true
+        resolution: 0.1   
+      angle:
+        range:
+          min: 0
+          max: 180
+        derived: false
+        resolution: 1
+        modality: null
+        throttle: 33
+        budget: 60/200
+  STEPPER:
+    name: STEPPER
+    dimension: angle
+    channels: 
+      angle:
+        range:
+          min: 0
+          max: 46 
+        derived: false
+        resolution: 1
+        modality: null
+        throttle: 33
+        budget: 60/200
+  HEATER:
+    name: HEATER
+    dimension: voltage
+    channels: 
+      voltage:
+        range:
+          min: 0
+          max: 12
+        derived: false
+        resolution: 12
+        modality: null
+        throttle: 333
+        budget: null
+      tempF:
+        range:
+          min: 0
+          max: 400
+        derived: true
+        resolution: 0.1
+  PUMP:
+    name: PUMP
+    dimension: voltage
+    channels:
+      voltage:
+        range:
+          min: 0
+          max: 12
+        resolution: 12
+        derived: false
+        modality: null
+        throttle: 333
+        budget: null
+      bubbles: 
+        range:
+          min: 0
+          max: 20
+        derived: true
+        resolution: 1
+        modality: bubble
+  MOTOR:
+    name: MOTOR
+    dimension: voltage
+    channels:
+      voltage:
+        range:
+          min: 0
+          max: 255
+        derived: false
+        resolution: 1
+        throttle: 33
+        budget: 60/200
+      rpm: 
+        range:
+          min: 0
+          max: 100
+        derived: true
+        resolution: 1
+        modality: null
+        
+devices:
+  cake:
+    name: cake
+    sensors:
+      -
+        id: 0
+        name: Encoder
+        type: number
+        unit: deg
+        sample: S
+        api: R
+        sampling-rate: 500
+        throttle: 500
+        states:
+          -
+            name: Q1
+            condition: 
+              lower: 0
+              upper: 90
+          - name: Q2
+            condition: 
+              lower: 90
+              upper: 180
+          - name: Q3
+            condition: 
+              lower: 180
+              upper: 270
+          - name: Q4
+            condition:
+              lower: 270
+              upper: 360
+      -
+        id: 1
+        name: Button
+        type: boolean
+        unit: ""
+        sample: B
+        api: A
+        sampling-rate: 500
+        throttle: 500
+        states:
+          -
+            name: BUTTON_DOWN
+            condition: 
+              lower: 0
+              upper: 1
+          - name: BUTTON_UP
+            condition: 
+              lower: 1
+              upper: 2
+  thermobuddha: 
+    name: thermobuddha
+    sensors:
+      -
+        id: 0
+        name: BASETOUCH
+        type: number
+        unit: "" 
+        sample: J
+        api: K
+        sampling-rate: 500
+        throttle: 500
+        states: 
+          -
+            name: NO TOUCH
+            condition:
+              lower: 0
+              upper: 1
+          -
+            name: TOUCH
+            condition: 
+              lower: 1
+              upper: 2
+  disco_aquarium:   
+    name: aquarium
+    sensors:
+      -
+        id: 0
+        name: "Temperature"
+        type: number
+        unit: F
+        sample: T
+        sampling-rate: 500
+        throttle: 500
+        api: V
+        states: 
+          -
+            name: "Fish Popsicles"
+            condition: 
+              lower: 0
+              upper: 75
+          -
+            name: "Just Right"
+            condition: 
+              lower: 75
+              upper: 80
+          -
+            name: "Fish Soup"
+            condition: 
+              lower: 80
+              upper: 212
+        events: 
+          - 
+            name: onTempChange
+            api: I
+      -
+        id: 1
+        name: "Proximity (Near)"
+        type: number
+        unit: ""
+        sample: N
+        sampling-rate: 500
+        throttle: 500
+        api: M
+        states: 
+          -
+            name: "Zone 1"
+            condition: 
+              lower: 0
+              upper: 100
+          -
+            name: "Zone 2"
+            condition: 
+              lower: 100
+              upper: 200
+          -
+            name: "Zone 3"
+            condition: 
+              lower: 200
+              upper: 300
+          -
+            name: "Zone 4"
+            condition: 
+              lower: 300
+              upper: 100000
+        events: 
+          - 
+            name: onZoneChange
+          
+      -
+        id: 2
+        name: "Proximity (Far)"
+        type: number
+        unit: ""
+        sample: F
+        sampling-rate: 500
+        throttle: 500
+        api: G
+        states: 
+          -
+            name: "Zone 1"
+            condition: 
+              lower: 0
+              upper: 100
+          -
+            name: "Zone 2"
+            condition: 
+              lower: 100
+              upper: 200
+          -
+            name: "Zone 3"
+            condition: 
+              lower: 200
+              upper: 300
+          -
+            name: "Zone 4"
+            condition: 
+              lower: 300
+              upper: 100000
+        events: 
+          - 
+            name: onZoneChange
+            api: O
+
+
+            
+
+  

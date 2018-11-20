@@ -1,0 +1,54 @@
+:javascript
+  var sc;
+  $(function(){
+    sc = new SocketControl({
+      ports: ports,
+      trigger: $('#socket-button'), 
+      selector: $('#port-selector'),
+      noports_func: function(dom){
+        dom.removeClass('btn-default btn-success').addClass('btn-danger').find('span').removeClass('glyphicon-send glyphicon-ok').addClass('glyphicon-remove');
+        $('#port-status').html("TRY RECONNECTING");
+      },
+      connect_func: function(dom){
+        port = $('#port-selector').val();
+        dom.removeClass('btn-danger btn-success').addClass('btn-default').find('span').removeClass('glyphicon-send glyphicon-remove').addClass('glyphicon-remove');
+        $('#port-selector').prop('disabled', 'disabled');
+        $('#port-status').html(port);
+      }, 
+      error_func: function(dom){
+        dom.removeClass('btn-default btn-success').addClass('btn-danger').find('span').removeClass('glyphicon-send glyphicon-ok').addClass('glyphicon-remove');
+        $('#port-status').html("–");
+      },
+      disconnect_func: function(dom){
+        dom.removeClass('btn-danger btn-default').addClass('btn-success').find('span').removeClass('glyphicon-ok glyphicon-remove').addClass('glyphicon-send');
+        $('#port-selector').prop('disabled', false);
+        $('#port-status').html("–");
+      }
+    });
+
+  })
+
+#port-select.widget.status
+  %label.widget-title.label-normal{:name => "Port Select"}
+  .widget-body
+    %span#port-info
+      CONNECTED TO:
+      %span#port-status –
+    %br/
+    %select#port-selector.form-control-special.col-xs-9
+    .socket-btns.btn-group.col-xs-3.nopadding
+      %button#socket-button.btn.btn.btn-success.btn-block
+        = glyph "send"
+    %br.clearfix/
+:css
+  #port-info{
+  	color: #00A8E1;
+  	/*font-weight: bold;*/
+  	font-size: 8pt;
+  }
+  #port-status{
+  	color: white;
+  	font-style: italic;
+  	font-weight: normal;
+  	font-size: 8pt;
+  }

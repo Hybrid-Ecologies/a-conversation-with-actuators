@@ -1,0 +1,140 @@
+
+/* INTERACTION */
+.popover{
+    // position: fixed;
+    z-index: 1000 !important;
+    @extend .noselect;
+    padding-top: 6px;
+    .title{
+        color: black;
+        width: 100%;
+        padding: 0px 0px 0px 0px;
+        font-family: "Avenir", sans-serif;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 8pt;
+    }
+    .dismiss{
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+    .popover-content{
+        cursor: pointer;
+        font-family: "Avenir", sans-serif;
+        width: 100%;
+        text-align: center;
+        color: $off_black;
+        padding: 0px 14px 0px 0px;
+    }
+    input{
+        width: 80%;
+        margin: 10px 10%;
+    }
+}
+.choreography.popover{
+    width: 96px;
+}
+
+
+
+block{
+	@extend .vert-centered-sink-top;
+  	width: 100px;
+    height: 90%;
+    padding: 0px;
+    margin-top: 0px;
+    border: 2px solid $off_black;
+    
+    /* Fonts */
+    color: white;
+    line-height: 100%;    
+    font-family: "Avenir", sans-serif;
+    font-weight: normal;
+    font-size: 0.8em;
+    text-align: center;
+    cursor: hand!important;
+
+    @include drop-shadow(0.93);
+    &.selected:not(.acceptor)::before{
+       content: '';
+        position: absolute;
+        top: -5px;
+        left: calc(50% - 15px);
+        width: 0; 
+        height: 0; 
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 12px solid $sexy_select;
+        z-index: 0110;
+    }
+   /* &.selected:not(.acceptor)::after{
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: calc(50% - 15px);
+        width: 0; 
+        height: 0; 
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-bottom: 12px solid $sexy_select;
+        z-index: 100000000;
+    }*/
+    
+    &.selected:not(.acceptor){
+        border: 2px solid $sexy_select;
+        padding: 0px;
+        @include drop-highlight-color(rgba(255,255,0,0.72));
+    }
+    
+
+}
+
+.dragbox{
+    @extend .vert-centered;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    background: darken($base, 30%);
+    width: 100px;
+    height: 60px;
+    z-index: 300;
+    opacity: 1.0;
+    border-radius: 5px;
+    cursor: -webkit-grabbing; cursor: -moz-grabbing;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+acceptor{
+    border: none;
+    border-radius: 5px;
+    @include inset-shadow(0.54);
+    &::after{
+        @extend .vert-centered;
+        height: 100%;
+        width: 100%;
+        font-family: "Avenir", sans-serif;
+        font-size: 10pt;
+        font-weight: bold;
+        text-align: center;
+        max-height: 90px;
+        z-index: 1000;
+    }
+    &.accepted{
+        /*padding-top: 8px;*/
+        height: 100%;
+        /*background: none !important;*/
+        border-radius: 0;
+        border: none;
+        &::after{
+            content: '';
+            display: none;
+        }
+    }
+}
+
+
+

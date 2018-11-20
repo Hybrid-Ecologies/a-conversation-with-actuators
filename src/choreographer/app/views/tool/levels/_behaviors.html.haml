@@ -1,0 +1,85 @@
+:coffeescript
+  $ ->
+
+    $("#behavior_name").on "focus", (e)->
+      console.log "BINDINGS DISABLED"
+      Widget.bindings_on = false
+    $("#behavior_name").on "blur", (e)->
+      console.log "BINDINGS ENABLED"
+      Widget.bindings_on = true
+    
+    $("input").on "keyup", (e)->
+      if e.keyCode == 13 #enter key
+        $(this).blur()
+    $("#behavior_name").on "change input", (e)->
+      name = $(this).val().trim()
+      if name == "" then name = "CURRENT_BEHAVIOR"
+      current_behavior.data = 
+        name: name
+    $('#clear-behavior').click (e)->
+      e.preventDefault()
+      e.stopPropagation()
+      b = current_behavior
+      alertify.confirm 'Clear tracks', 'Are you sure you want to clear <b>'+b.data.name+"</b> tracks?", (
+              () -> 
+                  alertify.notify b.data.name + " cleared.", 'info', 2
+                  b.clearStage()
+          ), 
+          (
+              ()-> 
+                  # alertify.error('Cancel')
+          )
+
+    $('#repeat').click ()->
+      $(this).toggleClass('active')
+      if $("#repeat").hasClass('active')
+        current_behavior.data = 
+          repeat: "repeat"
+      else
+        current_behavior.data = 
+          repeat: "no-repeat"
+
+    
+
+    
+
+%event#behaviors.composition-design.playground
+  .toolbar.full-hoz
+    %fieldset
+      %button.btn.btn-xs.btn-ghost NAME
+      %input#behavior_name{value: "BEHAVIOR_1", type: "text"}
+    .btn-group
+      %button.btn.btn-xs.btn-ghost#clear-behavior
+        =glyph "trash"
+        CLEAR
+      %button.btn.btn-xs.btn-ghost#save-behaviors
+        =glyph "floppy-disk"
+        SAVE
+  .content.full-hoz  
+    %button.btn.btn-xs.btn-info.toggle
+      =glyph "collapse-up"
+    #behavior_environment.workarea.vert-centered-sink-top
+      #timeruler.hoz
+        %button#add-stage.btn.btn-xs.btn-ghost
+          = glyph "plus"
+          NEW STAGE
+
+        %button#repeat.btn.btn-xs.btn-ghost
+          = glyph "repeat"
+          REPEAT
+      - if true
+        %acceptor.actuator.template{:data => {:accept=> 1}}
+        %acceptor.datasignals.mini.template
+          %button.btn.btn-xs.btn-danger.trash
+            =glyph "trash"
+          %button.btn.btn-xs.btn-primary.view-toggle
+            =glyph "eye-open"
+        %behavior.hoz.template
+          #stage.vert-centered-sink-top
+          #timetrack.vert-centered-sink-top
+            #scrubber.vert-centered-sink-top
+              #handle
+              #timeline
+            
+
+        
