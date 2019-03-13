@@ -2,7 +2,7 @@
 An open-source repository of software and hardware design files to create an actuation prototyping workstation.  
 
 
-# Choreographer (Web Application)
+## Choreographer (Web Application)
 Requirements:
 * Rails 4
 * Ruby 2.1.9 or higher
