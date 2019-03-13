@@ -12,12 +12,12 @@ EventMachine.run do
   @usb = Dir.glob("/dev/tty.wc*")
   # @usb = Dir.glob("/dev/tty.usb*")
   # @usb = Dir.glob("/dev/cu.HC-06-DevB")
+
   if @usb.length == 0 
     puts "M: NO PORTS DETECTED"
     return
   else
-    puts "M: RUNNING " + @usb[0]
-    puts "M: @ "+ @baud.to_s
+    puts "M: CONNECTING TO: #{@usb[0]} @ #{@baud.to_s} BAUD"
     @usb = @usb[0]
   end
 
@@ -36,6 +36,7 @@ EventMachine.run do
 
   # print ip + "\n"
   ip="localhost"
+  print "M: BINDING TO: #{ip} PORT #{@port}\n"
   # ip="128.32.39.129"
 
   EM::WebSocket.start(:host => ip, :port => @port) do |ws|
