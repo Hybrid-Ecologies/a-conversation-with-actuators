@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { confirmations: 'confirmations',  omniauth_callbacks: "omniauth_callbacks"}
-  resources :user, :only => ["show"]
 
   get 'aesthetic_development/network'
 
@@ -9,26 +7,12 @@ Rails.application.routes.draw do
       get 'selectors'
     end
   end
-  namespace :heat do
-    get 'sketch'
-    get 'field'
-    get 'generator'
-    get 'vision'
-  end
-
   namespace :tool do
     post 'visual_block'
     get 'index'
-    get 'pipeline'
-    get 'lens'
-    get 'splitter'
-    get 'optimal_lens'
-    get 'theoretical_testbed'
     get 'index'
     get 'displays'
     get 'start_server'
-    get 'dope'
-    get 'refract'
     get 'designer'
     get 'system_control'
     get 'aesthetic_actuation'
@@ -40,41 +24,12 @@ Rails.application.routes.draw do
 
   get 'devices/index'
 
-  controller :stream do
-    get "stream/moon", to: "streams#moon", :as => "moon"
-    get "stream/tides/:place", to: "streams#tides", :as => "tides"
-    get "stream/forecast/:place", to: "streams#forecast", :as => "temperature"
-    get "stream/zip/:id", to: "streams#zip", :as => "zip"
-    get "stream", to: "streams#index"
-  end
 
-  get 'circuit/sandbox'
-  get 'circuit/june_sandbox'
-
-  resources :designs do
-    get 'interface' =>"jig#interface"
-  end
-
-  namespace :jig do
-    get 'designer', :as => "designer"
-    get 'generator', :as => "generator"
-    get 'bom', :as => "bom"
-    get 'form', :as => "form"
-  end
-
-  get 'jig/interface/:id' => "jig#interface",  :as => "jig_interface"
-  
-
-  get 'threejs/height_displacement', :as => "pic2stl"
-  get 'threejs/environment', :as => "three_env"
-  get 'threejs/plane_box', :as => "plane_box"
-  get 'threejs/peg', :as => "peg_designer"
-  get 'threejs/weaver', :as => "weaver"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   # You can have the root of your site routed with "root"
-  root 'application#home'
+  root 'tool#cwa'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -277,16 +277,9 @@
   #control-column
     = render :partial => "tool/levels/project"  
   %group.vert#levels
-    - render :partial => "tool/levels/actuators", :locals => {:actuators => @metadata.actuators}
+    
     = render :partial => "tool/levels/datasignals"
-    - render :partial => "tool/levels/behaviors"
-    - render :partial => "tool/levels/sensors"
-    - render :partial => "tool/levels/psychophysics"
-    - render :partial => "tool/levels/composition"
-    - render :partial => "tool/levels/sequencer"
-    - render :partial => "tool/levels/distributed"
-    - render :partial => "tool/levels/statemachine"
-           
+    
 :css
   #ui2{
     height: 100%;

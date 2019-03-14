@@ -1,4 +1,4 @@
-DEFAULT_FILE = '/userstudy/examples/map.svg'
+DEFAULT_FILE = '/manifests/theatre.svg'
 
 class FileManager
   constructor: (@op) ->

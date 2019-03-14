@@ -7,4 +7,4 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-layers = Layer.create([{name: "Surface"}, {name: "Structure"}, {name: "Interactive"}, {name: "Weight"}]);
+# layers = Layer.create([{name: "Surface"}, {name: "Structure"}, {name: "Interactive"}, {name: "Weight"}]);

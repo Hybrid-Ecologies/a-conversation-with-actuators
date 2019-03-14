@@ -108,15 +108,7 @@
                 %li
                   = link_to "Analysis", aesthetic_development_network_path
           / Sign in
-          %ul.nav.navbar-nav.navbar-right
-            %li
-              - if user_signed_in?
-                = link_to user_path(current_user), id: "admin-key", class: "unlocked" do 
-                  = glyph "user"
-                  = current_user.name
-              - else
-                = link_to user_google_oauth2_omniauth_authorize_path , id: "admin-key" do 
-                  LOGIN
+
           / end sign in
         / /.navbar-collapse
       / /.container-fluid

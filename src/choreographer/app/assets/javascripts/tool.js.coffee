@@ -12,11 +12,9 @@
 //= require grid
 //= require hull
 //= require metamorphehalf/webcache
-//= require eld/ruler
+//= require ruler
 //= require eld/CanvasUtil
 //= require eld/artwork
-//= require eld/LightControl
-//= require actuation_aesthetics
 //= require actuation_aesthetics
 //= require annotator/jsoneditor.min
 
