@@ -40,13 +40,11 @@ class window.TimeSignalManager
       signal = new TimeSignal(dom)
       signal.form = {signal: datasignal, period: 1000}
       signal.easing = true
+
       if v == "off"
         signal.dom.attr('name', 'all_off')
-        # console.log datasignal
-        # console.log "ON"
         datasignal = numeric.linspace(1, 0, 40)
         datasignal = _.map datasignal, (s)-> return 1
-        # console.log datasignal 
         dom = TimeSignal.create
             clear: false
             target: $('#library.signal-design .track-full')

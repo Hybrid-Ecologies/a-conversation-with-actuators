@@ -17,6 +17,8 @@
 //= require eld/artwork
 //= require actuation_aesthetics
 //= require annotator/jsoneditor.min
+//= require midi-choreographer
+//= require theatre
 
 
 

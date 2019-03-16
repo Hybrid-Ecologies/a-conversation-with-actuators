@@ -61,7 +61,8 @@ class ToolController < ApplicationController
 
  def start_server
    # NOTE: currently doesn't work :(
-   dir = system('ruby ./ruby_scripts/ArduinoServer.rb &')
+   # dir = system('ruby ./ruby_scripts/ArduinoServer.rb &')
+   dir = system("sh start_server.sh")
    render :json => {msg: "I started server", debug: dir}
  end
 

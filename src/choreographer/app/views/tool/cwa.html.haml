@@ -5,185 +5,25 @@
   _.extend window, window.sens.actuators
 
   PROJECT = CANVAS_COLOR: 'rgb(245, 244, 240)'
+  
   window.am = null;
   window.vm = null;
+  window.theatre = null;
+  window.sc = null
+
   $('#shade').hide()
   $('body').loading
     theme: 'dark'
-  DEMO = 3
-  PLAY_ONCE = 0
-  PLAY_REPEAT = 1
-  HOLD_PLAY = 2
+
+  window.timeoutManager = []
+
+
   $ ->
     $('#main-alert').hide()
-
+    $('body').loading 'stop'
     window.ws = new WebStorage
-    # FILE MANAGER
     dom = 'projectviewer canvas'
-
-    processTheatre = (theatre)->
-      theatre.state = PLAY_ONCE;
-      theatre.processTheatre = ()->
-        theatre.midi = {}
-        theatre.docks = []
-        theatre.stages = []
-        scope = this
-        _.each this.getItems({selectable: true}), (item)->
-          if item.name
-            flag = item.name.split(":")[0]
-            switch flag
-              when "RX"
-                item.data.dock_id = theatre.docks.length
-                theatre.docks.push(item)
-              when "TX"
-                item.data.stage_id = theatre.stages.length
-                item.data.name = CanvasUtil.getName(item)
-                theatre.stages.push(item)
-        return {
-          stages: theatre.stages
-          docks: theatre.docks
-        }
-      
-      theatre.sendPWM = (dock_id, stage, voltage)->
-        if _.isUndefined dock_id
-          alertify.error("Redock needed")
-          return
-        revert = (t)->
-          c = new paper.Color(stage.data.color)
-          id = sc.sendMessage {flag: 'l', args: [dock_id, parseInt(c.red * 255),  parseInt(c.green * 255),  parseInt(c.blue * 255)]},
-              delay: t
-              live: true
-              update: false
-        switch theatre.state
-          when DEMO
-            voltage = parseInt(voltage * 4095)
-            sc.sendMessage {flag: 'v', args: [dock_id, voltage]},
-              delay: 0
-              live: true
-              update: false
-            if voltage == 0 then revert(0)
-          when HOLD_PLAY
-            if signal = tsm.getActiveTimeSignal()
-              if voltage == 1
-                commands = signal.command_list()
-
-                stage.play_ids = _.map commands, (command)->
-                  voltage = parseInt(command.param * 4095)
-                  id = sc.sendMessage {flag: 'v', args: [dock_id, voltage]},
-                    delay: command.t
-                    live: true
-                    update: false
-              else
-                _.each stage.play_ids, (id)->
-                  # console.log "clearing", id
-                  clearTimeout(id)
-                stage.play_ids = []
-                sc.sendMessage {flag: 'v', args: [dock_id, 0]},
-                  delay: 0
-                  live: true
-                  update: false
-                revert(0)
-            else
-              alertify.error('Select a signal to send.')
-          when PLAY_ONCE
-            if signal = tsm.getActiveTimeSignal()
-              commands = signal.command_list()
-
-              play_ids = _.map commands, (command)->
-                voltage = parseInt(command.param * 4095)
-                id = sc.sendMessage {flag: 'v', args: [dock_id, voltage]},
-                  delay: command.t
-                  live: true
-                  update: false
-              revert(signal.period);
-            else
-              alertify.error('Select a signal to send.')
-          when PLAY_REPEAT
-            if voltage != 1 then return
-            console.log "PR EVENT"
-            if signal = tsm.getActiveTimeSignal()
-              # debugger;
-              stage.repeat = !stage.repeat
-
-              if stage.repeat
-                stage.play_ids = []
-                behavior = ()->
-                  # alertify.success("REPEATING", signal.id)
-                  # console.log signal, signal.id
-                  commands = signal.command_list()
-                  _.each commands, (command)->
-                    voltage = parseInt(command.param * 4095)
-                    id = sc.sendMessage {flag: 'v', args: [dock_id, voltage]},
-                      delay: command.t
-                      live: true
-                      update: false
-                    stage.play_ids.push id
-
-                  if stage.repeat then stage.play_ids.push(_.delay(behavior, signal.period))
-                behavior()
-              else
-                # alertify.success("STOP REPEATING!")
-                _.each stage.play_ids, (id)->
-                  # console.log "clearing", id
-                  clearTimeout(id)
-                stage.play_ids = []
-                sc.sendMessage {flag: 'v', args: [dock_id, 0]},
-                  delay: 0
-                  live: true
-                  update: false
-                revert(0)
-            else
-              alertify.error('Select a signal to send.')  
-
-
-      theatre.updateStage = (stage_id, up)->
-        stage = theatre.getItem
-          data: 
-            stage_id: stage_id
-        pad = stage.getItem
-          name: (x)->
-            x.startsWith("stage")
-        
-        # RELEASED
-        if pad and up
-          pad.set
-            strokeColor: stage.data.color
-            strokeWidth: 10 
-          this.sendPWM(stage.data.dock, stage, 0)
-
-        # CONTACT
-        if pad and !up
-          pad.set
-            strokeColor: "white"
-            strokeWidth: 10 
-
-          this.sendPWM(stage.data.dock, stage, 1.0)
-
-
-      theatre.updateDock = (dock_id, stage_id, color)->
-        console.log "UD", dock_id, stage_id, color
-        dock = theatre.getItem {data: {dock_id: dock_id}}
-        stage = theatre.getItem {data: {stage_id: stage_id}}
-
-        if dock.data.stage then dock.data.stage.visible = false
-
-        stage.visible = true
-        dock.data.stage = stage
-        stage.data.dock = dock_id
-        stage.data.color = color
-
-        stage.position = dock.position.clone()
-        pad = stage.getItem
-          name: (x)->
-            x.startsWith("stage")
-        if pad
-          pad.set
-            strokeColor: stage.data.color
-            strokeWidth: 10 
-      t = theatre.processTheatre()
-      console.log "✓", "STAGES:", t.stages.length
-      console.log "✓", "DOCKS:", t.docks.length
-
+    # FILE MANAGER
     window.fs = new ProjectFileManager
       paper: Utility.paperSetup(dom)
       files: files
@@ -193,9 +33,12 @@
         AestheticActuation.enable paper
         window.theatre = main_paper.project
         paper.view.update();
-        processTheatre(theatre);
+        window.theatre = theatre
+        setupTheatre(theatre);
+        setupSockets()
+        bindHandlers()
         return
-     
+    
     # SOCKET CONTROL
     window.sc = new SocketControl
       socket_port: 3015
@@ -203,9 +46,8 @@
       trigger: $('#port-connect')
       selector: $('#port-selector')
       status: $('#port-status')
-
-    $('body').loading 'stop'
     
+  window.setupSockets = ()->
     sc.subscribe 'input', (command)->
       switch command.flag
         when "D" # DOCK CHANGE
@@ -216,59 +58,37 @@
         when "A"
           theatre.updateStage(command.args[0], command.args[1] == "UP")
 
-      # sensorProcess(command)
+  window.bindHandlers = ()->
+    $('.theatre-mode').on 'theatre_change', (e, state)->
+      if state == parseInt($(this).attr('name'))
+        $(this).click()
 
+    $('.theatre-mode').click ()->
+      state = parseInt($(this).attr('name'))
+      $(this).addClass('active').siblings().removeClass('active')
+      switch state
+        when PLAY_ONCE
+          alertify.notify("<b> TAP TO SEND </b> <br>Touch stages to play signal once")
+        when PLAY_REPEAT
+          alertify.notify("<b> PLAY/PAUSE </b> <br>Touch stages to play signal. Touch again to stop repeating.")
+        when HOLD_PLAY
+          alertify.notify("<b> HOLD TO PLAY </b> <br>Hold stages to play signal.")
+        when DEMO
+          alertify.notify("<b> TOUCH ON/ RELEASE OFF </b> <br>Touch to play a high signal.")
+      theatre.state = state
 
+    $('#nuke').click ()->  
+      theatre.stopDocks()
+      theatre.clearDocks()
 
-    window.ctrl = new LaunchControl()
-    ctrl.open().then ->
-      ctrl.led 'all', 'off'
-      return
-    ctrl.on 'message', (e) ->
-      console.log 'dataType: ' + e.dataType
-      console.log 'track   : ' + e.track
-      console.log 'value   : ' + e.value
-      console.log 'channel : ' + e.channel
-      console.log 'direction : ' + e.direction
-      switch e.dataType
-        when "knob1"
-          p = e.value / 128
-        when "knob2"
-          p = e.value / 128
-          if id = theatre.midi[e.track]
-              signal = tsm.getTimeSignal(id)
-              signal.dom.click()
-              signal.form = {period: p * 8000}
-        when "pad"      
-          if signal = tsm.getActiveTimeSignal()
-            if id = theatre.midi[e.track]
-              signal = tsm.getTimeSignal(id)
-              signal.dom.click()
-            else
-              ctrl.led(e.track, "amber")
-              theatre.midi[e.track] = signal.id
-        when "cursor"
-          switch e.direction
-            when "up" 
-              alertify.notify("<b> PLAY_ONCE MODE </b> <br>Touch stages to play signal once")
-              theatre.state =  PLAY_ONCE
-            when "down" 
-              alertify.notify("<b> PLAY_REPEAT MODE </b> <br>Touch stages to play signal. Touch again to stop repeating.")
-              theatre.state =  PLAY_REPEAT
-            when "left" 
-              alertify.notify("<b> HOLD_PLAY MODE </b> <br>Hold stages to play signal.")
-              theatre.state =  HOLD_PLAY
-            when "right" 
-              alertify.notify("<b> DEMO </b> <br>Touch to play a high signal.")
-              theatre.state =  DEMO
-
-
-          # turnoff = ()->
-          #   ctrl.led(e.track, "off")
-          # _.delay turnoff, 500
-          
+      # STOP COMMUNICATION
+      id = sc.sendMessage {flag: 'q', args: []},
+        delay: 0
+        live: true
+        update: false
+    
+      alertify.error("<b>Emergency stop initiated.</b> <br>Cleared "+window.timeoutManager.length+" messages.");
   
-
 #main-alert.alert.alert-warning
   %strong HEY!
   %span LETS START DESIGNING!

@@ -61,12 +61,11 @@ class window.SocketControl
     return
 
   disconnect: ->
-    @ws.onclose = ->
-    # disable onclose handler first
-    @ws.close()
-    @state = SocketControl.DISCONNECTED
-    @update()
-    return
+    if @ws
+	    @ws.close()
+	    @state = SocketControl.DISCONNECTED
+	    @update()
+	    return
 
   connect: ->
     scope = this
@@ -87,6 +86,9 @@ class window.SocketControl
 
     @ws.onclose = ->
       scope.state = SocketControl.DISCONNECTED
+      alertify.notify "<b> We lost connection to the theatre. </b> Try restating the server.", 'error', 4
+      comm.live = false
+      comm.update()
       scope.update()
       return
 

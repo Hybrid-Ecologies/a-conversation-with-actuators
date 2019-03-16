@@ -96,6 +96,9 @@ class window.TimeSignal
 
       set: (obj) ->
         # console.log "OBJ", obj
+        if obj.period < 250
+        	obj.period = 250
+
         scope = this
         if _.isEmpty(obj) then return
         window.paper = @paper
@@ -115,6 +118,8 @@ class window.TimeSignal
         canvas_refresh = ["semantic", "timescale", "tracks"]
         canvas_refresh = _.some canvas_refresh, (t)-> return scope[t] != prev[t]
         period_change = (not @semantic) and (@period != prev.period)
+
+
         canvas_refresh or= period_change
 
         if canvas_refresh

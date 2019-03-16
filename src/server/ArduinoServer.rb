@@ -27,6 +27,12 @@ EventMachine.run do
     loop do
       # puts @sp.readlines()
       data = @sp.readline("\n")
+      if data.to_s.include? "v.1"
+        if @sp.flush_input()
+          puts "FLUSHED SERIAL"
+        end
+      end
+      
       puts "IN: "+ data
       next if !data or data.to_s.size < 1
       @channel.push data
@@ -54,7 +60,13 @@ EventMachine.run do
     }
     ws.onmessage do |msg|
         print "OUT:" + msg
-        @sp.write(msg);
+        if msg.to_s.include? "q"
+          if @sp.flush_input()
+            puts "FLUSHED SERIAL"
+          end
+        else
+          @sp.write(msg)
+        end
     end
 
   end

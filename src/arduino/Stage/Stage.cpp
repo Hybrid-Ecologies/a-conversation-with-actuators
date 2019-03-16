@@ -106,14 +106,14 @@ void StageManager::scan_docks(){
     int dock_val = samples / SAMPLES;
     short stage_id = which_stage(dock_val);
    
-    snprintf(report, sizeof(report), "%6d: %6d \t", docks[k].pin, dock_val); 
-    Serial.print(report);
+    // snprintf(report, sizeof(report), "%6d: %6d \t", docks[k].pin, dock_val); 
+    // Serial.print(report);
 
     if(docks[k].stage != stage_id){
       dock_change_handler(k, docks[k].stage, stage_id);
     }
   }
-  Serial.println();
+  // Serial.println();
   
 }
 

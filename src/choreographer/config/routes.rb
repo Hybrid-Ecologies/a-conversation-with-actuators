@@ -1,31 +1,8 @@
 Rails.application.routes.draw do
-
-  get 'aesthetic_development/network'
-
-  resources :visual_blocks do 
-    collection do 
-      get 'selectors'
-    end
-  end
   namespace :tool do
-    post 'visual_block'
-    get 'index'
-    get 'index'
-    get 'displays'
     get 'start_server'
-    get 'designer'
-    get 'system_control'
-    get 'aesthetic_actuation'
     get 'cwa'
-    get 'tester'
-    get 'midi'
-    get 'annotator'
   end
-
-  get 'devices/index'
-
-
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   # You can have the root of your site routed with "root"

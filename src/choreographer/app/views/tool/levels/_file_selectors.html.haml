@@ -27,8 +27,12 @@
 
         if sc and sc.state == 1 and scope.live
           alertify.notify 'You are <b>live!</b>', 'success', 4
+          # sc.sendMessage {flag: 'w', args: [0]},
+          #     delay: 500
+          #     live: true
+          #     update: false
         else if not scope.live 
-          alertify.notify '<b>The simulation will now update.</b> The device is no longer in use.', 'info', 4
+          alertify.notify '<b>Offline!</b> Make sure to remove all actuators from the theatre.', 'info', 4
             
     update: ()->
       if @live
@@ -57,12 +61,12 @@
         %select.form-control#port-selector.sexy
         %button#port-connect.btn.btn-xs.btn-success
           = glyph "transfer"
-  #sensor-select.hoz-left.mpadding{width: 30}
+  #nuke.hoz-left.mpadding{width: 30}
     .vert-left.full-w
       %span.status-label
-        SENSING?
+        STOP?
       .full-hoz
-        %button#sensor-connect.btn.btn-xs.btn-off
+        %button#server-connect.btn.btn-xs.btn-danger
           = glyph "record"
   #port-select.hoz-left.mpadding{width: 30}
     .vert-left.full-w
